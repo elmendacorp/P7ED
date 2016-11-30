@@ -8,18 +8,16 @@
 #include "Fichero.h"
 #include "Commit.h"
 #include "fecha.h"
-#include <vector>
-#include <map>
-#include <list>
-#include <set>
+#include "vDinamico.h"
+#include "Lista.h"
+#include "THashCerrada.h"
 
 
 class Gitcode {
 private:
-    std::map<std::string, std::list<Commit *>::iterator> ABBbuscar;
-    std::list<Commit *> commits;
-    std::vector<Fichero *> ficheros;
-    std::map<std::string, Fichero *> ficherosActivos;
+   THashCerrada<Commit*> ABBbuscar;
+    Lista<Commit *> commits;
+    vDinamico<Fichero *> ficheros;
 public:
     /**
      * Busca un commit por su  V1
@@ -57,9 +55,9 @@ public:
      * @param timestamp
      * @param fichAfectados
      */
-    void nuevoCommit(const std::string &codigo, const std::string &texto, const Fecha &timestamp,
+    //void nuevoCommit(const std::string &codigo, const std::string &texto, const Fecha &timestamp,
                      const std::set<std::string> &fichAfectados);
-
+1
     /**
      * Elimina un commit segun su codigo
      * @param code_commit

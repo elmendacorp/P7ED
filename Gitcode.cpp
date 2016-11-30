@@ -6,7 +6,7 @@
 #include <fstream>
 #include <iostream>
 
-
+/*
 Commit *Gitcode::getCommit(const std::string &commi) {
     if(ABBbuscar.find(commi)!=ABBbuscar.end()) {
         return *ABBbuscar.find(commi)->second;
@@ -15,7 +15,7 @@ Commit *Gitcode::getCommit(const std::string &commi) {
     }
 
 }
-
+*/
 
 Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
     std::string lineaActual;
@@ -39,8 +39,8 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
             auto nombre = ruta.substr(pos + 1, ruta.length());
             auto tamaBytes = std::stoi(tama);
             f = new Fichero(nombre, ubicacion, tamaBytes);
-            ficheros.push_back(f);
-            ficherosActivos.emplace(f->getNombre(), f);
+            ficheros.aumenta(f);
+
 
 
         }
@@ -87,9 +87,10 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
                 inserta->anadeFichero(ficheros[ref]);
                 indice = indice.substr(0, pos);
             }
+            auto it=commits.iteradorFin();
+            commits.insertar(it, inserta);
+            if(ABBbuscar.insertar(djb2(inserta->getCodigo()))){}
 
-            auto it = commits.emplace(commits.end(), inserta);
-            ABBbuscar.emplace(inserta->getCodigo(), it);
 
 
         }
