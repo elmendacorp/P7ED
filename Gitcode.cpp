@@ -89,7 +89,7 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
             }
             auto it=commits.iteradorFin();
             commits.insertar(it, inserta);
-            if(ABBbuscar.insertar(djb2(inserta->getCodigo()))){}
+            if(ABBbuscar.insertar(djb2(inserta->getCodigo()),inserta)){}
 
 
 
