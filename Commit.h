@@ -20,7 +20,6 @@ private:
 public:
     Commit() {
         codigo = "";
-        marcaDeTiempo = Fecha();
     }
 
     Commit(const std::string &codigo, Fecha marcaDeTiempo, const std::string &mensaje)
@@ -66,9 +65,9 @@ public:
         }
     }
 
-    bool buscaFichero(const std::string &nombre){
-        for(int i=0;i< MisFicheros.size();++i){
-            if(MisFicheros[i]->getNombre()==nombre){
+    bool buscaFichero(const std::string &nombre) {
+        for (int i = 0; i < MisFicheros.size(); ++i) {
+            if (MisFicheros[i]->getNombre() == nombre) {
                 return true;
             }
         }
@@ -83,9 +82,6 @@ public:
         return ((this->codigo != orig.codigo));
     }
 
-    ~Commit() {
-        MisFicheros.clear();
-    }
 };
 
 

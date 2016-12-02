@@ -150,9 +150,7 @@ void vDinamico<T>::inserta(unsigned pos, T &dato) {
  */
 template<typename T>
 void vDinamico<T>::aumenta(T &dato) {
-    if(tamal==0){
-        v=vDinamico<T>();
-    }
+    if(tamaf==0){v=new T [0];}
     if (tamal == tamaf) {
         T *vaux;
         vaux = new T[tamaf = tamaf * 2];
