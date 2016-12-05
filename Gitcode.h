@@ -34,6 +34,14 @@ public:
     void estadisticas();
     Gitcode(const std::string &fich, const std::string &commi);
 
+    Commit getCommit(std::string &commi);
+
+    vDinamico<Commit> getCommitFechas(const Fecha &inicio, const Fecha &fin);
+
+    vDinamico<Commit> getCommitFichero(std::string fichero);
+
+    void eliminaFichero(const std::string &fichero);
+
     unsigned long hf(std::string s) {
         unsigned long hash = 5381;
         char c;

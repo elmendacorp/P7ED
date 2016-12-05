@@ -43,7 +43,7 @@ public:
         MisFicheros.push_back(fichero);
     }
 
-    bool borraFichero(std::string &fichero) {
+    bool borraFichero(const std::string &fichero) {
         auto ite = MisFicheros.begin();
         while (ite != MisFicheros.end()) {
             Fichero *tmp = *ite;

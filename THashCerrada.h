@@ -7,7 +7,7 @@
 
 
 #include "vDinamico.h"
-#include <bitset>
+//#include <bitset>
 
 enum class estado {
     libre, usado, borrado
@@ -76,11 +76,12 @@ public:
     }
 
     const double factorCarga() {
-        return numIns/tammax; }
+        return numIns / tammax;
+    }
 
-    int maxColision(){return maxColisiones;}
+    int maxColision() { return maxColisiones; }
 
-    bool insertar(unsigned long key,  T &dato );
+    bool insertar(unsigned long key, T &dato);
 
     bool borrar(unsigned long key, T &resultado);
 
@@ -88,13 +89,13 @@ public:
 
     unsigned long tamaTabla() { return tammax; }
 
-    unsigned long hash(const unsigned long &key, const int &intento) { return (key+intento*intento)% tammax; }
+    unsigned long hash(const unsigned long &key, const int &intento) { return (key + intento * intento) % tammax; }
 
-    unsigned long hash2(const unsigned long &key, const int &intento){
-        int h1,h2;
-        h1=key%23549;
-        h2=key%25373;
-        return (h1+(intento*(key-h2)))%tammax;
+    unsigned long hash2(const unsigned long &key, const int &intento) {
+        int h1, h2;
+        h1 = key % 23549;
+        h2 = key % 25373;
+        return (h1 + (intento * (key - h2))) % tammax;
     }
 
     //std::string mem(){return memoria.to_string();}
@@ -129,7 +130,7 @@ bool THashCerrada<T>::buscar(unsigned long key, T &resultado) {
     }
     int intent = 0;
     unsigned long clave;
-    clave = hash(key, intent);
+    clave = hash2(key, intent);
     while (!tabla[clave].checkEstado(estado::libre)) {
         if (tabla[clave].checkEstado(estado::usado)) {
             if (tabla[clave].getDato() == resultado) {
@@ -138,6 +139,7 @@ bool THashCerrada<T>::buscar(unsigned long key, T &resultado) {
             }
             ++intent;
         }
+        clave = hash2(key, intent);
     }
     resultado = nullptr;
     return false;
@@ -150,7 +152,7 @@ bool THashCerrada<T>::borrar(unsigned long key, T &resultado) {
     }
     int intent = 0;
     unsigned long clave;
-    clave = hash(key, intent);
+    clave = hash2(key, intent);
     while (!tabla[clave].checkEstado(estado::libre)) {
         if (tabla[clave].checkEstado(estado::usado)) {
             if (tabla[clave].getDato() == resultado) {
@@ -160,6 +162,7 @@ bool THashCerrada<T>::borrar(unsigned long key, T &resultado) {
             }
             ++intent;
         }
+        clave = hash2(key, intent);
     }
     resultado = nullptr;
     return false;

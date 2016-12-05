@@ -6,10 +6,12 @@
 #include <fstream>
 #include <iostream>
 
+
 void Gitcode::estadisticas() {
     double carga=ABBbuscar.factorCarga();
     printf("factor carga:%f colisiones: %d\n",carga, ABBbuscar.maxColision());
 }
+
 
 Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
     std::string lineaActual;
@@ -96,6 +98,50 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
     }
 }
 
+Commit Gitcode::getCommit(std::string &commi) {
+    IteradorL<Commit> ini = commits.iteradorInicio();
+    while (ini!=commits.iteradorFin()){
+        if(ini.dato().getCodigo()==commi){
+            return ini.dato();
+        }else{
+            ini.siguiente();
+        }
+    }
+}
 
+vDinamico<Commit> Gitcode::getCommitFechas(const Fecha &inicio, const Fecha &fin) {
+    vDinamico<Commit> temporal;
+    IteradorL<Commit> temp = commits.iteradorInicio();
+    while(temp!=commits.iteradorFin()){
+        if(temp.dato().getMarcaDeTiempo()<fin&&temp.dato().getMarcaDeTiempo()>inicio){
+            Commit t=temp.dato();
+            temporal.aumenta(t);
+        }
+        temp.siguiente();
+    }
 
+    return temporal;
+}
 
+vDinamico<Commit> Gitcode::getCommitFichero(std::string fichero) {
+    vDinamico<Commit>temporal;
+    auto tempo = commits.iteradorInicio();
+    while(tempo!=commits.iteradorFin()){
+        Fichero* t=tempo.dato().buscaFichero(fichero);
+        if(t->getTamaBytes()!=0){
+            Commit d=tempo.dato();
+            temporal.aumenta(d);
+        }
+        tempo.siguiente();
+    }
+
+    return temporal;
+}
+
+void Gitcode::eliminaFichero(const std::string &fichero) {
+    auto temp= commits.iteradorInicio();
+    while(temp!=commits.iteradorFin()){
+        temp.dato().borraFichero(fichero);
+        temp.siguiente();
+    }
+}
