@@ -145,3 +145,28 @@ void Gitcode::eliminaFichero(const std::string &fichero) {
         temp.siguiente();
     }
 }
+
+void Gitcode::nuevoCommit(Commit &c) {
+    refCommit tmp;
+    if(!ABBbuscar.buscar(hf(c.getCodigo()),tmp)){
+        IteradorL<Commit> in=commits.iteradorFin();
+        commits.insertar(in,c);
+        refCommit inserta2=refCommit(c.getCodigo(),commits.iteradorFin());
+        ABBbuscar.insertar(hf(c.getCodigo()),inserta2);
+    }
+}
+
+
+void Gitcode::borraCommit(std::string codigo) {
+    refCommit tmp;
+    if(ABBbuscar.borrar(hf(codigo),tmp)){
+         commits.borrar(tmp.itc);
+    }
+}
+
+void Gitcode::nuevoFichero(Fichero &orig) {
+    if(!ficheros.busca(&orig)) {
+        Fichero * f =new Fichero(orig);
+        ficheros.aumenta(f);
+    }
+}

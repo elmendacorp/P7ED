@@ -42,6 +42,14 @@ public:
 
     void eliminaFichero(const std::string &fichero);
 
+    void nuevoFichero(Fichero &orig);
+
+    void nuevoCommit(Commit &c);
+
+    void borraCommit(std::string codigo);
+
+    int numFicheros(){return ficheros.tama();}
+
     unsigned long hf(std::string s) {
         unsigned long hash = 5381;
         char c;

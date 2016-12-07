@@ -7,7 +7,6 @@
 
 
 #include "vDinamico.h"
-//#include <bitset>
 
 enum class estado {
     libre, usado, borrado
@@ -38,8 +37,6 @@ public:
 
     void setDato(T &dat) { dato = dat; }
 
-    void setClave(estado clav) { ocupacion = clav; }
-
     T getDato() { return dato; }
 
     bool checkEstado(const estado &orig) { return ocupacion == orig; }
@@ -50,8 +47,7 @@ template<typename T>
 class THashCerrada {
 private:
     double numIns;
-    const static int tammax = 31033;
-    //std::bitset<tammax> memoria;
+    const static int tammax = 38675;//31033 doble
     Nodo<T> tabla[tammax];
     int maxColisiones;
 public:
@@ -98,7 +94,6 @@ public:
         return (h1 + (intento * (key - h2))) % tammax;
     }
 
-    //std::string mem(){return memoria.to_string();}
 };
 
 template<typename T>
@@ -106,14 +101,13 @@ bool THashCerrada<T>::insertar(unsigned long key, T &dato) {
     int intent = 0;
     unsigned long clave;
     bool insertado = false;
-    while (!insertado) {
-        clave = hash2(key, intent);
+    while (!insertado && (numIns < tammax)) {
+        clave = hash(key, intent);
         if (tabla[clave].checkEstado(estado::libre) || tabla[clave].checkEstado(estado::borrado)) {
             tabla[clave].setDato(dato);
             tabla[clave].setUsado();
             if (intent > maxColisiones) { maxColisiones = intent; }
             ++numIns;
-            //memoria[clave].flip();
             return true;
         } else {
             ++intent;
@@ -125,46 +119,38 @@ bool THashCerrada<T>::insertar(unsigned long key, T &dato) {
 
 template<typename T>
 bool THashCerrada<T>::buscar(unsigned long key, T &resultado) {
-    if (resultado == nullptr) {
-        throw std::invalid_argument("dato nulo");
-    }
     int intent = 0;
     unsigned long clave;
-    clave = hash2(key, intent);
+    clave = hash(key, intent);
     while (!tabla[clave].checkEstado(estado::libre)) {
         if (tabla[clave].checkEstado(estado::usado)) {
-            if (tabla[clave].getDato() == resultado) {
+            if(resultado==tabla[clave].getDato()) {
                 resultado = tabla[clave].getDato();
+                ++intent;
                 return true;
             }
-            ++intent;
         }
         clave = hash2(key, intent);
     }
-    resultado = nullptr;
     return false;
 }
 
 template<typename T>
 bool THashCerrada<T>::borrar(unsigned long key, T &resultado) {
-    if (resultado == nullptr) {
-        throw std::invalid_argument("dato nulo");
-    }
     int intent = 0;
     unsigned long clave;
-    clave = hash2(key, intent);
+    clave = hash(key, intent);
     while (!tabla[clave].checkEstado(estado::libre)) {
         if (tabla[clave].checkEstado(estado::usado)) {
-            if (tabla[clave].getDato() == resultado) {
+            if(resultado==tabla[clave].getDato()) {
                 resultado = tabla[clave].getDato();
                 tabla[clave].setBorrado();
+                ++intent;
                 return true;
             }
-            ++intent;
         }
         clave = hash2(key, intent);
     }
-    resultado = nullptr;
     return false;
 }
 
